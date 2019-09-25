@@ -330,7 +330,7 @@ function bindEnterGuard (
         })
       }
       next(cb)
-    })
+    }, match)
   }
 }
 

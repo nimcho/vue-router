@@ -930,7 +930,12 @@ function normalizeLocation (
   if (next._normalized) {
     return next
   } else if (next.name) {
-    return extend({}, raw)
+    next = extend({}, raw);
+    const params = next.params;
+    if (params && typeof params === 'object') {
+      next.params = extend({}, params);
+    }
+    return next
   }
 
   // relative params
@@ -2276,7 +2281,7 @@ function bindEnterGuard (
         });
       }
       next(cb);
-    })
+    }, match)
   }
 }
 
@@ -2592,6 +2597,11 @@ class AbstractHistory extends History {
 
 
 
+function resolveProps$1 (route, config)
+{
+  return resolveProps(route, config) || {};
+}
+
 class VueRouter {
   
   
@@ -2832,3 +2842,4 @@ if (inBrowser && window.Vue) {
 }
 
 export default VueRouter;
+export { resolveProps$1 as resolveProps };

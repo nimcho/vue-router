@@ -4,10 +4,10 @@
   * @license MIT
   */
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-  typeof define === 'function' && define.amd ? define(factory) :
-  (global = global || self, global.VueRouter = factory());
-}(this, function () { 'use strict';
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+  typeof define === 'function' && define.amd ? define(['exports'], factory) :
+  (global = global || self, factory(global.VueRouter = {}));
+}(this, function (exports) { 'use strict';
 
   /*  */
 
@@ -950,20 +950,25 @@
     if (next._normalized) {
       return next
     } else if (next.name) {
-      return extend({}, raw)
+      next = extend({}, raw);
+      var params = next.params;
+      if (params && typeof params === 'object') {
+        next.params = extend({}, params);
+      }
+      return next
     }
 
     // relative params
     if (!next.path && next.params && current) {
       next = extend({}, next);
       next._normalized = true;
-      var params = extend(extend({}, current.params), next.params);
+      var params$1 = extend(extend({}, current.params), next.params);
       if (current.name) {
         next.name = current.name;
-        next.params = params;
+        next.params = params$1;
       } else if (current.matched.length) {
         var rawPath = current.matched[current.matched.length - 1].path;
-        next.path = fillParams(rawPath, params, ("path " + (current.path)));
+        next.path = fillParams(rawPath, params$1, ("path " + (current.path)));
       } else {
         warn(false, "relative params navigation requires a current route.");
       }
@@ -2299,7 +2304,7 @@
           });
         }
         next(cb);
-      })
+      }, match)
     }
   }
 
@@ -2652,6 +2657,11 @@
 
 
 
+  function resolveProps$1 (route, config)
+  {
+    return resolveProps(route, config) || {};
+  }
+
   var VueRouter = function VueRouter (options) {
     if ( options === void 0 ) options = {};
 
@@ -2885,6 +2895,9 @@
     window.Vue.use(VueRouter);
   }
 
-  return VueRouter;
+  exports.default = VueRouter;
+  exports.resolveProps = resolveProps$1;
+
+  Object.defineProperty(exports, '__esModule', { value: true });
 
 }));

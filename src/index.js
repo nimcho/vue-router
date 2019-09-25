@@ -8,12 +8,18 @@ import { cleanPath } from './util/path'
 import { createMatcher } from './create-matcher'
 import { normalizeLocation } from './util/location'
 import { supportsPushState } from './util/push-state'
+import { resolveProps as resolveProps_inner } from './components/view'
 
 import { HashHistory } from './history/hash'
 import { HTML5History } from './history/html5'
 import { AbstractHistory } from './history/abstract'
 
 import type { Matcher } from './create-matcher'
+
+export function resolveProps (route, config)
+{
+  return resolveProps_inner(route, config) || {};
+}
 
 export default class VueRouter {
   static install: () => void;

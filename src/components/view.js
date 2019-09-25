@@ -102,7 +102,7 @@ export default {
   }
 }
 
-function resolveProps (route, config) {
+export function resolveProps (route, config) {
   switch (typeof config) {
     case 'undefined':
       return
